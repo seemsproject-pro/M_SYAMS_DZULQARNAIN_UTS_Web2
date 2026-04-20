@@ -42,6 +42,12 @@ Menggunakan dua laci (drawer) interaktif:
 * **Dashboard Stats:** Menampilkan statistik total produk dan pesanan masuk.
 * **Full CRUD:** Admin memiliki akses penuh untuk menambah, mengedit, dan menghapus produk.
 
+### 7. 📈 Advanced Smart Filtering (Nilai Plus)
+Sistem filter mutakhir yang menggabungkan tiga parameter sekaligus secara real-time:
+* **Category Sync:** Memisahkan hardware berdasarkan tipe tanpa reload.
+* **Price Smart-Sort:** Fitur pengurutan harga dari terendah/tertinggi serta filter budget (Di bawah/atas 5 Juta).
+* **Multi-Layer Logic:** User bisa mencari nama barang di dalam kategori tertentu sambil mengurutkan harganya secara bersamaan.
+
 ---
 
 ## 🛠️ Teknologi yang Digunakan
