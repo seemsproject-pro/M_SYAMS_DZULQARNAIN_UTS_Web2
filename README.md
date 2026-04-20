@@ -4,50 +4,47 @@
 ---
 
 ## 📝 Deskripsi Projek
-**Anamac Komputer** adalah aplikasi e-commerce modern yang berfokus pada penjualan perangkat keras (hardware) komputer premium. Aplikasi ini dibangun menggunakan arsitektur **Single Page Interaction** dengan pemanfaatan **LocalStorage** sebagai database sementara. UI dirancang dengan pendekatan **Mobile-First** dan estetika **Glassmorphism** untuk memberikan pengalaman pengguna kelas dunia.
+**Anamac Komputer** adalah platform e-commerce hardware premium yang dirancang untuk memberikan pengalaman belanja kelas dunia. Aplikasi ini mengusung konsep **Single Page Interaction (SPI)** yang meminimalkan reload halaman dengan memanfaatkan **LocalStorage** sebagai engine database client-side. UI dibangun dengan estetika **Glassmorphism**, tipografi modern (**Syne & DM Sans**), dan sistem navigasi yang sangat responsif.
 
 ---
 
 ## 🚀 Fitur Unggulan (Premium Features)
 
-### 1. 🛡️ Sistem Autentikasi (Auth)
-* **Register & Login:** Pelanggan dapat membuat akun dan masuk ke sistem.
-* **Login Protection:** Fitur "Tambah ke Keranjang" dan "Memberi Ulasan" dikunci secara otomatis jika pelanggan belum melakukan login.
-* **Dynamic Auth UI:** Navbar akan berubah menampilkan inisial profil user setelah login berhasil.
+### 1. 📑 Sistem Dual-Sidebar (Advanced UX)
+Berbeda dengan web e-commerce standar, Anamac menggunakan sistem dua laci (drawer):
+* **Wishlist Sidebar (Kiri):** Diakses via ikon ❤️ di navbar, memungkinkan user memantau barang impian tanpa berpindah halaman.
+* **Product Detail Sidebar (Kanan):** Muncul saat produk diklik, menyajikan spesifikasi lengkap, gambar resolusi tinggi, dan fitur ulasan pelanggan dalam satu tampilan terpadu.
 
-### 2. 🛍️ Katalog Produk Interaktif
-* **Real-time Search:** Mencari hardware berdasarkan nama produk tanpa reload halaman.
-* **Category Filter:** Memfilter produk berdasarkan kategori (Laptop, Tablet, Aksesoris).
-* **Smart Pagination:** Navigasi halaman otomatis jika jumlah produk melebihi batas tampilan (8 produk per halaman).
+### 2. 🛡️ Autentikasi & Proteksi Akun
+* **Secure Session:** Dilengkapi sistem Register dan Login yang menyimpan data secara lokal.
+* **Logout System:** Fitur keluar akun yang aman dengan konfirmasi user dan pembersihan session data.
+* **Action Protection:** Fitur "Tambah ke Keranjang" dan "Tulis Ulasan" terkunci secara otomatis (Proteksi Login) untuk menjaga integritas data transaksi.
 
-### 3. 📑 Sistem Dual-Sidebar (Premium UX)
-* **Left Sidebar (Wishlist):** Mengelola daftar keinginan pelanggan yang muncul elegan dari sisi kiri.
-* **Right Sidebar (Detail & Review):** Menampilkan detail spesifikasi produk dan ulasan pembeli yang muncul dari sisi kanan.
+### 3. 📱 Mobile-First & Responsive Fix
+* **Image Auto-Scaling:** Perbaikan logika koding pada `app.js` memastikan gambar produk tetap muncul sempurna di layar smartphone (fix min-height & aspect ratio).
+* **Touch-Friendly UI:** Tombol navigasi dan filter dirancang luas agar mudah diakses oleh jempol pengguna mobile.
 
-### 4. ⭐ Rating & Ulasan Dinamis
-* **Star Rating System:** Pelanggan bisa memberikan rating 1-5 bintang beserta ulasan teks.
-* **Real-time Average Rating:** Rating bintang di halaman depan dihitung secara otomatis berdasarkan rata-rata ulasan asli yang tersimpan di database.
+### 4. ⭐ Sistem Rating & Ulasan Real-time
+* **Dynamic Averaging:** Bintang rating di halaman depan dihitung secara otomatis berdasarkan ulasan asli yang masuk di database LocalStorage.
+* **User Feedback:** Pelanggan yang login dapat memberikan ulasan teks dan rating bintang 1-5.
 
-### 5. 🛒 Alur Transaksi Lengkap
-* **Shopping Cart:** Kelola kuantitas barang, hitung subtotal, dan pajak (PPN 11%) secara otomatis.
-* **Secure Checkout:** Form pengiriman barang dengan validasi data pelanggan.
-* **Order History:** Pelanggan dapat melihat riwayat invoice dan status pesanan yang pernah dilakukan.
+### 5. 🛒 Transaksi & Riwayat Invoice
+* **Tax & Shipping Logic:** Perhitungan otomatis PPN 11% dan ongkos kirim flat di halaman Cart.
+* **Visual History:** Halaman riwayat pesanan yang mewah dengan thumbnail produk, status pengiriman, dan fitur **Cetak Invoice**.
 
-### 6. ⚙️ Dashboard Admin (Management)
-* **Product CRUD:** Admin dapat menambah, mengedit, dan menghapus produk di katalog.
-* **Transaction Monitoring:** Melihat seluruh data transaksi/pesanan yang masuk dari semua pelanggan.
-
-### 7. 🌓 Dark & Light Mode
-* Mendukung tema gelap dan terang dengan transisi halus yang tersimpan di sistem browser (Persistence Theme).
+### 6. ⚙️ Admin Command Center
+* **Dashboard Stats:** Menampilkan statistik total inventori dan jumlah pesanan masuk secara real-time.
+* **Full CRUD:** Admin dapat menambah, mengedit, dan menghapus produk katalog.
+* **Order Monitoring:** Pantau dan kelola data transaksi pelanggan dari satu pintu masuk (Gateway Admin).
 
 ---
 
 ## 🛠️ Teknologi yang Digunakan
-* **HTML5:** Struktur semantik aplikasi.
-* **Tailwind CSS:** Styling modern dengan metode Utility-first.
-* **Vanilla JavaScript (ES6+):** Logika inti aplikasi, manipulasi DOM, dan State Management.
-* **LocalStorage API:** Database sisi klien untuk menyimpan data produk, user, keranjang, dan transaksi.
-* **Plus Jakarta Sans:** Google Fonts untuk tipografi premium.
+* **HTML5 & CSS3:** Struktur semantik dan custom styling.
+* **Tailwind CSS:** Framework CSS utility-first untuk desain modern dan responsif.
+* **Vanilla JavaScript (ES6+):** Logika core, state management, dan DOM manipulation.
+* **LocalStorage API:** Database persistensi untuk produk, user, dan transaksi.
+* **Google Fonts:** Syne (Display) & DM Sans (Body) untuk tipografi premium.
 
 ---
 
@@ -55,15 +52,17 @@
 ```text
 anamac-komputer/
 ├── data/
-│   └── products.json      # Database awal produk
-├── js/
-│   ├── app.js            # Logika utama (Grid, Sidebar, Grid, UI)
-│   └── auth.js           # Logika Login, Register, & Session
-├── index.html            # Halaman Utama
-├── login.html            # Halaman Masuk
-├── register.html         # Halaman Daftar Akun
-├── cart.html             # Halaman Keranjang Belanja
-├── checkout.html         # Halaman Proses Pembayaran
-├── history.html          # Halaman Riwayat Pesanan
-├── admin.html            # Dashboard Manajemen Admin
-└── README.md             # Dokumentasi Projek
+│   └── products.json      # Database awal (Initial Data)
+├── js/                    # Folder Script (Case-Sensitive Fix)
+│   ├── app.js             # Logic: Grid, Dual-Sidebar, Grid, UI
+│   └── auth.js            # Logic: Login, Register, & Logout
+├── index.html             # Storefront / Catalog
+├── login.html             # Gateway Masuk
+├── register.html          # Pendaftaran User
+├── cart.html              # Management Keranjang
+├── checkout.html          # Form Pengiriman & Pembayaran
+├── history.html           # Riwayat Pesanan & Invoice
+├── admin.html             # Command Center (Admin Only)
+└── README.md              # Dokumentasi Projek
+
+https://seemsproject-pro.github.io/M_SYAMS_DZULQARNAIN_UTS_Web2/index.html
