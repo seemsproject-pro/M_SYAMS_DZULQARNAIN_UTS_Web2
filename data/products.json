@@ -1,9 +1,58 @@
 [
-  { "id": 1, "name": "Tablet Xiaomi + Stylus & Cover", "price": 4500000, "category": "Tablet", "image": "https://placehold.co/400x300/e2e8f0/1e293b?text=Xiaomi+Tablet", "description": "Tablet performa tinggi, lengkap dengan stylus." },
-  { "id": 2, "name": "Laptop Gaming RTX Series", "price": 15500000, "category": "Laptop", "image": "https://placehold.co/400x300/e2e8f0/1e293b?text=Gaming+Laptop", "description": "Laptop tangguh memberikan frame rate maksimal." },
-  { "id": 3, "name": "Smart TV 4K 50-Inch", "price": 5200000, "category": "Televisi", "image": "https://placehold.co/400x300/e2e8f0/1e293b?text=Smart+TV", "description": "TV pintar resolusi 4K untuk pengalaman sinematik." },
-  { "id": 4, "name": "Headphone Wireless ANC", "price": 1200000, "category": "Aksesoris", "image": "https://placehold.co/400x300/e2e8f0/1e293b?text=Headphone", "description": "Nikmati musik tanpa gangguan suara bising dari luar." },
-  { "id": 5, "name": "MacBook Air M2", "price": 18000000, "category": "Laptop", "image": "https://placehold.co/400x300/e2e8f0/1e293b?text=MacBook+Air", "description": "Laptop ultra tipis dengan performa chip M2 yang efisien." },
-  { "id": 6, "name": "iPad Pro 11-Inch", "price": 14500000, "category": "Tablet", "image": "https://placehold.co/400x300/e2e8f0/1e293b?text=iPad+Pro", "description": "Kanvas digital terbaik untuk para profesional kreatif." },
-  { "id": 7, "name": "Monitor Ultrawide 34-Inch", "price": 6500000, "category": "Aksesoris", "image": "https://placehold.co/400x300/e2e8f0/1e293b?text=Ultrawide+Monitor", "description": "Ruang kerja super luas untuk kebutuhan multitasking." }
+  {
+    "id": 1,
+    "name": "Tablet Xiaomi + Stylus & Cover",
+    "price": 4500000,
+    "category": "Tablet",
+    "image": "https://images.unsplash.com/photo-1585515320310-259814833e62?q=80&w=800&auto=format&fit=crop",
+    "description": "Tablet performa tinggi, lengkap dengan stylus. Cocok untuk desain grafis dan mencatat materi kuliah dengan presisi tinggi."
+  },
+  {
+    "id": 2,
+    "name": "Laptop Gaming RTX Series",
+    "price": 15500000,
+    "category": "Laptop",
+    "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?q=80&w=800&auto=format&fit=crop",
+    "description": "Laptop tangguh memberikan frame rate maksimal untuk game AAA. Dilengkapi sistem pendingin mutakhir."
+  },
+  {
+    "id": 3,
+    "name": "Smart TV 4K 50-Inch",
+    "price": 5200000,
+    "category": "Aksesoris",
+    "image": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=800&auto=format&fit=crop",
+    "description": "TV pintar resolusi 4K untuk pengalaman sinematik. Smart OS terintegrasi dengan Netflix dan YouTube."
+  },
+  {
+    "id": 4,
+    "name": "Headphone Wireless ANC",
+    "price": 1200000,
+    "category": "Aksesoris",
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop",
+    "description": "Nikmati musik tanpa gangguan suara bising dari luar. Baterai tahan hingga 40 jam penggunaan aktif."
+  },
+  {
+    "id": 5,
+    "name": "MacBook Air M2",
+    "price": 18000000,
+    "category": "Laptop",
+    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=800&auto=format&fit=crop",
+    "description": "Laptop ultra tipis dengan performa chip M2 yang efisien. Portabilitas tinggi untuk profesional yang sibuk."
+  },
+  {
+    "id": 6,
+    "name": "iPad Pro 11-Inch",
+    "price": 14500000,
+    "category": "Tablet",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?q=80&w=800&auto=format&fit=crop",
+    "description": "Kanvas digital terbaik untuk para profesional kreatif. Dukungan Apple Pencil Gen 2 dan Magic Keyboard."
+  },
+  {
+    "id": 7,
+    "name": "Monitor Ultrawide 34-Inch",
+    "price": 6500000,
+    "category": "Aksesoris",
+    "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=800&auto=format&fit=crop",
+    "description": "Ruang kerja super luas untuk kebutuhan multitasking. Akurasi warna sRGB 99% untuk editing video."
+  }
 ]
