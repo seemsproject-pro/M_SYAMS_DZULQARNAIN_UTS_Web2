@@ -1,92 +1,182 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Anamac</title>
+    <title>Admin Command Center | Anamac</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Poppins', sans-serif; }</style>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: { anamac: { 600: '#2563eb', 700: '#1d4ed8' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(16px); }
+        .dark .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-800 min-h-screen">
+<body class="bg-slate-50 dark:bg-[#0b1120] text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300">
 
-    <div id="adminLoginScreen" class="flex items-center justify-center min-h-screen bg-gray-900">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm">
-            <div class="text-center mb-6">
-                <div class="bg-gray-900 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">⚙️</div>
-                <h2 class="text-2xl font-bold">Admin Gateway</h2>
+    <div id="adminLoginScreen" class="flex items-center justify-center min-h-screen bg-slate-900 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 -left-4 w-72 h-72 bg-anamac-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+            <div class="absolute bottom-0 -right-4 w-72 h-72 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+        </div>
+        
+        <div class="glass p-10 rounded-[3rem] shadow-2xl w-full max-w-md relative z-10 border border-white/20">
+            <div class="text-center mb-10">
+                <div class="bg-anamac-600 w-20 h-20 rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-xl shadow-anamac-600/40">
+                    <span class="text-white font-black text-3xl uppercase italic">A</span>
+                </div>
+                <h2 class="text-2xl font-black tracking-tighter uppercase italic">Admin <span class="text-anamac-600">Gateway</span></h2>
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mt-2">Authorized Personnel Only</p>
             </div>
-            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-                <input type="text" id="adminUsername" placeholder="Username (admin)" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-gray-900 outline-none">
-                <input type="password" id="adminPassword" placeholder="Password (admin123)" required class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-gray-900 outline-none">
-                <button type="submit" class="w-full bg-gray-900 text-white font-bold py-3 rounded-xl hover:bg-black transition">Masuk</button>
+            <form onsubmit="handleAdminLogin(event)" class="space-y-5">
+                <div class="space-y-1">
+                    <label class="text-[9px] font-black uppercase text-slate-400 ml-4 tracking-widest">Username</label>
+                    <input type="text" id="adminUsername" placeholder="admin" required class="w-full px-6 py-4 rounded-2xl border-none bg-slate-100 dark:bg-slate-800 focus:ring-2 focus:ring-anamac-600 outline-none font-bold text-sm">
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[9px] font-black uppercase text-slate-400 ml-4 tracking-widest">Security Pin</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" required class="w-full px-6 py-4 rounded-2xl border-none bg-slate-100 dark:bg-slate-800 focus:ring-2 focus:ring-anamac-600 outline-none font-bold text-sm">
+                </div>
+                <button type="submit" class="w-full bg-anamac-600 text-white font-black py-5 rounded-2xl hover:bg-anamac-700 shadow-xl shadow-anamac-600/30 transition-all active:scale-95 uppercase text-xs tracking-widest">
+                    Unlock Dashboard
+                </button>
             </form>
         </div>
     </div>
 
-    <div id="adminDashboardScreen" class="hidden pb-20">
-        <nav class="bg-gray-900 text-white p-4 shadow-md sticky top-0 z-50">
-            <div class="container mx-auto flex justify-between items-center">
-                <h1 class="text-xl font-bold tracking-wider">⚙️ ANAMAC ADMIN</h1>
-                <button onclick="logoutAdmin()" class="bg-red-600 px-4 py-1.5 rounded-lg text-sm font-bold hover:bg-red-700">Logout</button>
+    <div id="adminDashboardScreen" class="hidden min-h-screen">
+        <nav class="glass sticky top-0 z-[50] border-b border-slate-200 dark:border-slate-800">
+            <div class="container mx-auto px-6 h-20 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-slate-900 dark:bg-anamac-600 p-2 rounded-xl">
+                        <span class="text-white font-black text-sm uppercase italic">A</span>
+                    </div>
+                    <h1 class="text-sm font-black tracking-widest uppercase italic">Anamac <span class="text-anamac-600">Admin</span></h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-anamac-600 transition-colors">Lihat Toko</a>
+                    <button onclick="logoutAdmin()" class="bg-red-500/10 text-red-500 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all">Logout</button>
+                </div>
             </div>
         </nav>
 
-        <main class="container mx-auto p-4 mt-6">
-            <h2 class="text-2xl font-bold mb-4">📦 Manajemen Produk</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 h-fit">
-                    <h3 id="formTitle" class="font-bold mb-4 border-b pb-2">Tambah Produk</h3>
-                    <form id="productForm" onsubmit="saveProduct(event)" class="space-y-3">
+        <main class="container mx-auto px-6 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Total Produk</p>
+                    <h4 class="text-3xl font-black" id="statProductCount">0</h4>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Pesanan Masuk</p>
+                    <h4 class="text-3xl font-black text-anamac-600" id="statOrderCount">0</h4>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Sistem Status</p>
+                    <h4 class="text-3xl font-black text-green-500">Online</h4>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-8 h-8 bg-anamac-600/10 text-anamac-600 rounded-xl flex items-center justify-center font-black">1</div>
+                        <h2 class="text-xl font-black tracking-tight uppercase italic" id="formTitle">Tambah Produk</h2>
+                    </div>
+                    <form id="productForm" onsubmit="saveProduct(event)" class="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
                         <input type="hidden" id="productId">
-                        <input type="text" id="productName" placeholder="Nama Produk" required class="w-full px-3 py-2 border rounded-lg">
-                        <input type="number" id="productPrice" placeholder="Harga" required class="w-full px-3 py-2 border rounded-lg">
-                        <select id="productCategory" required class="w-full px-3 py-2 border rounded-lg">
-                            <option value="Laptop">Laptop</option>
-                            <option value="Tablet">Tablet</option>
-                            <option value="Televisi">Televisi</option>
-                            <option value="Aksesoris">Aksesoris</option>
-                        </select>
-                        <input type="url" id="productImage" placeholder="URL Gambar" required class="w-full px-3 py-2 border rounded-lg">
-                        <textarea id="productDesc" placeholder="Deskripsi" required rows="2" class="w-full px-3 py-2 border rounded-lg"></textarea>
-                        <div class="flex space-x-2">
-                            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg">Simpan</button>
-                            <button type="button" onclick="resetForm()" class="w-full bg-gray-200 text-gray-800 font-bold py-2 rounded-lg">Batal</button>
+                        <div class="space-y-1">
+                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Nama Barang</label>
+                            <input type="text" id="productName" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border-none text-sm font-bold outline-none focus:ring-2 focus:ring-anamac-600">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Harga (Angka)</label>
+                            <input type="number" id="productPrice" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border-none text-sm font-bold outline-none focus:ring-2 focus:ring-anamac-600">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Kategori</label>
+                            <select id="productCategory" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border-none text-sm font-bold outline-none focus:ring-2 focus:ring-anamac-600">
+                                <option value="Laptop">Laptop</option>
+                                <option value="Tablet">Tablet</option>
+                                <option value="Televisi">Televisi</option>
+                                <option value="Aksesoris">Aksesoris</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">URL Gambar (Unsplash)</label>
+                            <input type="url" id="productImage" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border-none text-[10px] font-bold outline-none focus:ring-2 focus:ring-anamac-600">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[9px] font-black uppercase text-slate-400 ml-2">Deskripsi Spesifikasi</label>
+                            <textarea id="productDesc" required rows="3" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border-none text-sm font-medium outline-none focus:ring-2 focus:ring-anamac-600"></textarea>
+                        </div>
+                        <div class="flex gap-3 pt-4">
+                            <button type="submit" class="flex-1 bg-anamac-600 text-white font-black py-4 rounded-xl text-[10px] uppercase tracking-widest shadow-lg shadow-anamac-600/20 active:scale-95 transition-all">Simpan</button>
+                            <button type="button" onclick="resetForm()" class="bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-300 px-6 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all">Batal</button>
                         </div>
                     </form>
                 </div>
 
-                <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-200 overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="bg-gray-50 text-sm text-gray-600"><th class="p-3">ID</th><th class="p-3">Info</th><th class="p-3">Harga</th><th class="p-3">Aksi</th></tr>
-                        </thead>
-                        <tbody id="adminProductTable"></tbody>
-                    </table>
-                </div>
-            </div>
+                <div class="lg:col-span-2 space-y-12">
+                    <section>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-anamac-600/10 text-anamac-600 rounded-xl flex items-center justify-center font-black">2</div>
+                                <h2 class="text-xl font-black tracking-tight uppercase italic">Inventory</h2>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-slate-50 dark:bg-slate-900/50">
+                                    <tr class="text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                                        <th class="p-6">Produk</th>
+                                        <th class="p-6">Harga</th>
+                                        <th class="p-6 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminProductTable" class="divide-y divide-slate-50 dark:divide-slate-700"></tbody>
+                            </table>
+                        </div>
+                    </section>
 
-            <h2 class="text-2xl font-bold mb-4 border-t-4 border-gray-300 pt-8">💰 Data Transaksi / Pesanan</h2>
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="bg-gray-900 text-white text-sm">
-                            <th class="p-3 rounded-tl-lg">Order ID / Tanggal</th>
-                            <th class="p-3">Pelanggan</th>
-                            <th class="p-3">Total Belanja</th>
-                            <th class="p-3">Status</th>
-                            <th class="p-3 rounded-tr-lg text-center">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminOrderTable">
-                        </tbody>
-                </table>
+                    <section>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-8 h-8 bg-anamac-600/10 text-anamac-600 rounded-xl flex items-center justify-center font-black">3</div>
+                            <h2 class="text-xl font-black tracking-tight uppercase italic">Recent Orders</h2>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-slate-900 text-white">
+                                    <tr class="text-[10px] font-black uppercase tracking-widest">
+                                        <th class="p-6">ID / Tanggal</th>
+                                        <th class="p-6">Pelanggan</th>
+                                        <th class="p-6">Total</th>
+                                        <th class="p-6 text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminOrderTable" class="divide-y divide-slate-50 dark:divide-slate-700 text-sm"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
             </div>
         </main>
     </div>
 
     <script>
-        const ADMIN_USER = "admin"; const ADMIN_PASS = "admin123";
+        const ADMIN_USER = "admin"; 
+        const ADMIN_PASS = "admin123";
         const loginScreen = document.getElementById('adminLoginScreen');
         const dashboardScreen = document.getElementById('adminDashboardScreen');
 
@@ -95,8 +185,9 @@
             if (sessionStorage.getItem('isAdminAuth') === 'true') {
                 loginScreen.classList.add('hidden');
                 dashboardScreen.classList.remove('hidden');
+                document.body.classList.remove('bg-slate-900');
                 renderAdminTable(); 
-                renderOrderTable(); // Render pesanan
+                renderOrderTable();
             } else {
                 loginScreen.classList.remove('hidden');
                 dashboardScreen.classList.add('hidden');
@@ -106,82 +197,118 @@
             e.preventDefault();
             if (document.getElementById('adminUsername').value === ADMIN_USER && document.getElementById('adminPassword').value === ADMIN_PASS) {
                 sessionStorage.setItem('isAdminAuth', 'true'); checkAdminSession();
-            } else alert("Akses Ditolak!");
+            } else alert("❌ Akses Ditolak! Gunakan kredensial yang benar.");
         }
         function logoutAdmin() { sessionStorage.removeItem('isAdminAuth'); window.location.reload(); }
 
-        // --- CRUD PRODUK (Singkat) ---
+        // --- CRUD PRODUK ---
         let adminProducts = JSON.parse(localStorage.getItem('products')) || [];
         function renderAdminTable() {
             const tbody = document.getElementById('adminProductTable');
+            document.getElementById('statProductCount').innerText = adminProducts.length;
             tbody.innerHTML = adminProducts.map(p => `
-                <tr class="border-b">
-                    <td class="p-3 text-xs text-gray-400 font-mono">${p.id}</td>
-                    <td class="p-3"><p class="font-bold text-sm">${p.name}</p><span class="text-[10px] bg-blue-100 text-blue-700 px-2 rounded-full">${p.category}</span></td>
-                    <td class="p-3 font-semibold text-sm">Rp ${p.price.toLocaleString('id-ID')}</td>
-                    <td class="p-3 space-x-2">
-                        <button onclick="editProduct(${p.id})" class="text-yellow-500 font-bold text-sm">Edit</button>
-                        <button onclick="deleteProduct(${p.id})" class="text-red-500 font-bold text-sm">Hapus</button>
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                    <td class="p-6">
+                        <div class="flex items-center gap-4">
+                            <img src="${p.image}" class="w-12 h-12 rounded-xl object-cover border dark:border-slate-700">
+                            <div>
+                                <p class="font-bold text-sm dark:text-white line-clamp-1">${p.name}</p>
+                                <span class="text-[9px] font-black uppercase text-anamac-600 bg-anamac-600/10 px-2 py-0.5 rounded-full">${p.category}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-6 font-black text-sm">Rp ${p.price.toLocaleString('id-ID')}</td>
+                    <td class="p-6 text-center space-x-4">
+                        <button onclick="editProduct(${p.id})" class="text-yellow-500 font-bold text-xs uppercase tracking-widest hover:underline">Edit</button>
+                        <button onclick="deleteProduct(${p.id})" class="text-red-500 font-bold text-xs uppercase tracking-widest hover:underline">Hapus</button>
                     </td>
                 </tr>`).join('');
         }
+
         function saveProduct(e) {
             e.preventDefault();
             const idInput = document.getElementById('productId').value;
             const newProduct = {
                 id: idInput ? parseInt(idInput) : Date.now(),
-                name: document.getElementById('productName').value, price: parseInt(document.getElementById('productPrice').value),
-                category: document.getElementById('productCategory').value, image: document.getElementById('productImage').value, description: document.getElementById('productDesc').value
+                name: document.getElementById('productName').value, 
+                price: parseInt(document.getElementById('productPrice').value),
+                category: document.getElementById('productCategory').value, 
+                image: document.getElementById('productImage').value, 
+                description: document.getElementById('productDesc').value
             };
-            if (idInput) { const i = adminProducts.findIndex(p => p.id === parseInt(idInput)); if (i !== -1) adminProducts[i] = newProduct; } 
-            else adminProducts.push(newProduct);
-            localStorage.setItem('products', JSON.stringify(adminProducts)); resetForm(); renderAdminTable();
+            if (idInput) { 
+                const i = adminProducts.findIndex(p => p.id === parseInt(idInput)); 
+                if (i !== -1) adminProducts[i] = newProduct; 
+            } else {
+                adminProducts.push(newProduct);
+            }
+            localStorage.setItem('products', JSON.stringify(adminProducts)); 
+            resetForm(); 
+            renderAdminTable();
         }
-        function editProduct(id) {
-            const p = adminProducts.find(x => x.id === id); if(!p) return;
-            document.getElementById('formTitle').innerText = "Edit Produk"; document.getElementById('productId').value = p.id;
-            document.getElementById('productName').value = p.name; document.getElementById('productPrice').value = p.price;
-            document.getElementById('productCategory').value = p.category; document.getElementById('productImage').value = p.image;
-            document.getElementById('productDesc').value = p.description;
-        }
-        function deleteProduct(id) { if(confirm("Hapus produk?")) { adminProducts = adminProducts.filter(p => p.id !== id); localStorage.setItem('products', JSON.stringify(adminProducts)); renderAdminTable(); } }
-        function resetForm() { document.getElementById('productForm').reset(); document.getElementById('productId').value = ''; document.getElementById('formTitle').innerText = "Tambah Produk"; }
 
-        // --- READ DATA PESANAN (BARU) ---
+        function editProduct(id) {
+            const p = adminProducts.find(x => x.id === id); 
+            if(!p) return;
+            document.getElementById('formTitle').innerText = "Edit Produk"; 
+            document.getElementById('productId').value = p.id;
+            document.getElementById('productName').value = p.name; 
+            document.getElementById('productPrice').value = p.price;
+            document.getElementById('productCategory').value = p.category; 
+            document.getElementById('productImage').value = p.image;
+            document.getElementById('productDesc').value = p.description;
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function deleteProduct(id) { 
+            if(confirm("Hapus produk ini dari database?")) { 
+                adminProducts = adminProducts.filter(p => p.id !== id); 
+                localStorage.setItem('products', JSON.stringify(adminProducts)); 
+                renderAdminTable(); 
+            } 
+        }
+
+        function resetForm() { 
+            document.getElementById('productForm').reset(); 
+            document.getElementById('productId').value = ''; 
+            document.getElementById('formTitle').innerText = "Tambah Produk"; 
+        }
+
+        // --- ORDER MANAGEMENT ---
         function renderOrderTable() {
             const tbody = document.getElementById('adminOrderTable');
             const orders = JSON.parse(localStorage.getItem('orders')) || [];
-            
+            document.getElementById('statOrderCount').innerText = orders.length;
+
             if (orders.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-gray-500">Belum ada pesanan masuk.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" class="p-10 text-center text-slate-400 font-medium italic">Belum ada pesanan masuk.</td></tr>';
                 return;
             }
 
-            // Reverse agar pesanan terbaru di atas
-            tbody.innerHTML = orders.reverse().map(o => `
-                <tr class="border-b hover:bg-gray-50">
-                    <td class="p-3">
-                        <p class="font-mono font-bold text-sm text-gray-800">${o.id}</p>
-                        <p class="text-xs text-gray-500">${o.date}</p>
+            tbody.innerHTML = [...orders].reverse().map(o => `
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                    <td class="p-6">
+                        <p class="font-mono font-bold text-xs text-anamac-600">${o.id}</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">${o.date}</p>
                     </td>
-                    <td class="p-3">
-                        <p class="font-bold text-sm text-gray-800">${o.customerName}</p>
-                        <p class="text-xs text-gray-500">${o.phone}</p>
+                    <td class="p-6">
+                        <p class="font-bold text-sm dark:text-white uppercase">${o.customerName}</p>
+                        <p class="text-[10px] text-slate-500 font-medium">${o.phone}</p>
                     </td>
-                    <td class="p-3 font-bold text-blue-600">Rp ${o.total.toLocaleString('id-ID')}</td>
-                    <td class="p-3">
-                        <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1 rounded-full">${o.status || 'Diproses'}</span>
-                    </td>
-                    <td class="p-3 text-center">
-                        <button onclick="hapusPesanan('${o.id}')" class="text-red-500 hover:text-red-700 font-bold text-sm">Hapus Data</button>
+                    <td class="p-6 font-black text-slate-900 dark:text-white">Rp ${o.total.toLocaleString('id-ID')}</td>
+                    <td class="p-6 text-center">
+                        <button onclick="hapusPesanan('${o.id}')" class="text-red-500 hover:text-red-700 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        // Fitur hapus riwayat pesanan oleh Admin
         function hapusPesanan(orderId) {
-            if(confirm("Yakin ingin menghapus data pesanan ini?")) {
+            if(confirm("Hapus data transaksi ini? (Aksi ini permanen)")) {
                 let orders = JSON.parse(localStorage.getItem('orders')) || [];
                 orders = orders.filter(o => o.id !== orderId);
                 localStorage.setItem('orders', JSON.stringify(orders));
