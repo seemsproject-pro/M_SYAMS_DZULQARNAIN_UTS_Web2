@@ -12,7 +12,6 @@ let currentDisplayData = [];
 // AWAL MUASAL DATA (Koneksi ke data/products.json)
 async function fetchProducts() {
     let localData = JSON.parse(localStorage.getItem('products'));
-    // Jika belum ada data di browser, tarik dari file JSON
     if (!localData || localData.length === 0) {
         try {
             const res = await fetch('data/products.json');
@@ -26,7 +25,7 @@ async function fetchProducts() {
     currentDisplayData = [...products];
     displayPage(1);
     updateUIStats();
-    checkAuthUI(); // Sinkron status login di navbar
+    checkAuthUI(); 
 }
 
 // ==========================================
@@ -48,7 +47,6 @@ function renderProducts(items) {
             <div class="bg-white dark:bg-slate-800 rounded-[2.5rem] p-4 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:shadow-2xl transition-all duration-500 group">
                 <div class="relative overflow-hidden rounded-[2rem] aspect-square mb-6 bg-slate-100 dark:bg-slate-900 cursor-pointer" onclick="toggleDetailSidebar(${p.id})">
                     <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    
                     <button onclick="event.stopPropagation(); toggleWishlist(${p.id})" class="absolute top-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur h-11 w-11 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-90 z-10">
                         <span class="text-lg">${isWished ? '❤️' : '🤍'}</span>
                     </button>
@@ -70,82 +68,66 @@ function renderProducts(items) {
 }
 
 // ==========================================
-// 3. LOGIKA DUAL-SIDEBAR (Paling Penting!)
+// 3. LOGIKA DUAL-SIDEBAR (Kiri & Kanan)
 // ==========================================
 
-// Buka Wishlist (Muncul dari KIRI)
 function toggleWishlistSidebar() {
     const drawer = document.getElementById('wishlistDrawer');
     const overlay = document.getElementById('sidebarOverlay');
-    
-    // Tutup detail dulu biar gak tabrakan
     const detailDrawer = document.getElementById('detailDrawer');
     if (detailDrawer) detailDrawer.classList.add('translate-x-full');
 
     overlay.classList.remove('hidden');
     setTimeout(() => {
         overlay.classList.add('opacity-100');
-        drawer.classList.remove('-translate-x-full'); // Geser ke kanan (muncul)
+        drawer.classList.remove('-translate-x-full');
     }, 10);
     
     document.body.style.overflow = 'hidden';
     renderWishlistInDrawer();
 }
 
-// Buka Detail (Muncul dari KANAN)
 function toggleDetailSidebar(productId) {
     const drawer = document.getElementById('detailDrawer');
     const overlay = document.getElementById('sidebarOverlay');
     const p = products.find(x => x.id === productId);
-
-    // Tutup wishlist dulu
     const wishDrawer = document.getElementById('wishlistDrawer');
     if (wishDrawer) wishDrawer.classList.add('-translate-x-full');
 
     overlay.classList.remove('hidden');
     setTimeout(() => {
         overlay.classList.add('opacity-100');
-        drawer.classList.remove('translate-x-full'); // Geser ke kiri (muncul)
+        drawer.classList.remove('translate-x-full');
     }, 10);
 
     document.body.style.overflow = 'hidden';
     renderDetailInDrawer(p);
 }
 
-// Tutup Semua Sidebar
 function closeAllSidebars() {
     const left = document.getElementById('wishlistDrawer');
     const right = document.getElementById('detailDrawer');
     const overlay = document.getElementById('sidebarOverlay');
-
     if (left) left.classList.add('-translate-x-full');
     if (right) right.classList.add('translate-x-full');
-
     overlay.classList.remove('opacity-100');
-    setTimeout(() => {
-        overlay.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-    }, 300);
+    setTimeout(() => { overlay.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
 }
 
-function closeSidebar() { closeAllSidebars(); } // Biar tombol ✕ di HTML nyambung
+function closeSidebar() { closeAllSidebars(); }
 
 // ==========================================
-// 4. RENDERER KONTEN DALAM SIDEBAR
+// 4. RENDERER KONTEN SIDEBAR
 // ==========================================
 
 function renderWishlistInDrawer() {
     const container = document.getElementById('wishlistContent');
     const wished = products.filter(p => wishlist.includes(p.id));
-    
     container.innerHTML = wished.length ? wished.map(p => `
         <div class="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-3xl border dark:border-slate-700 mb-4">
             <img src="${p.image}" class="w-16 h-16 object-cover rounded-2xl">
-            <div class="flex-1">
-                <h4 class="font-bold text-sm line-clamp-1">${p.name}</h4>
-                <p class="text-anamac-600 font-black text-xs">Rp ${p.price.toLocaleString('id-ID')}</p>
-            </div>
-            <button onclick="toggleWishlist(${p.id}, true)" class="text-red-500 p-2 hover:bg-red-50 rounded-xl">✕</button>
+            <div class="flex-1"><h4 class="font-bold text-sm line-clamp-1">${p.name}</h4><p class="text-anamac-600 font-black text-xs">Rp ${p.price.toLocaleString('id-ID')}</p></div>
+            <button onclick="toggleWishlist(${p.id}, true)" class="text-red-500 p-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl">✕</button>
         </div>`).join('') : '<div class="text-center py-20 opacity-20"><span class="text-6xl">❤️</span><p class="font-bold mt-4 uppercase italic">Wishlist Kosong</p></div>';
 }
 
@@ -169,46 +151,26 @@ function renderDetailInDrawer(p) {
             <div class="pt-6 px-2">
                 <h4 class="font-black text-xs uppercase tracking-widest mb-4 border-b dark:border-slate-800 pb-2">Ulasan Pembeli (${reviews.length})</h4>
                 <div class="space-y-4">
-                    ${reviews.length ? reviews.map(r => `
-                        <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-3xl border dark:border-slate-700 text-xs">
-                            <div class="flex justify-between mb-1">
-                                <span class="font-bold text-anamac-600 uppercase">${r.userName}</span>
-                                <span class="text-yellow-500">${'⭐'.repeat(r.rating)}</span>
-                            </div>
-                            <p class="italic text-slate-600 dark:text-slate-300">"${r.comment}"</p>
-                        </div>`).join('') : '<p class="text-center opacity-40 py-10 text-xs italic">Belum ada ulasan.</p>'}
+                    ${reviews.length ? reviews.map(r => `<div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-3xl border dark:border-slate-700 text-xs"><div class="flex justify-between mb-1"><span class="font-bold text-anamac-600 uppercase">${r.userName}</span><span class="text-yellow-500">${'⭐'.repeat(r.rating)}</span></div><p class="italic text-slate-600 dark:text-slate-300">"${r.comment}"</p></div>`).join('') : '<p class="text-center opacity-40 py-10 text-xs italic">Belum ada ulasan.</p>'}
                 </div>
             </div>
         </div>`;
 
     formArea.classList.toggle('hidden', false);
     if (user) {
-        formArea.innerHTML = `
-            <div class="space-y-4">
-                <div class="flex gap-2 justify-center text-2xl">
-                    ${[1,2,3,4,5].map(n => `<button onclick="submitReview(${p.id}, ${n})" class="hover:scale-125 transition-all">⭐</button>`).join('')}
-                </div>
-                <div class="flex gap-2">
-                    <input type="text" id="reviewInput" placeholder="Komentar..." class="flex-1 p-3 rounded-2xl border-none bg-white dark:bg-slate-700 focus:ring-2 focus:ring-anamac-600 text-sm shadow-sm outline-none">
-                    <button onclick="submitReview(${p.id}, 5)" class="bg-anamac-600 text-white px-5 rounded-2xl font-bold text-xs uppercase shadow-lg">Kirim</button>
-                </div>
-            </div>`;
+        formArea.innerHTML = `<div class="space-y-4"><div class="flex gap-2 justify-center text-2xl">${[1,2,3,4,5].map(n => `<button onclick="submitReview(${p.id}, ${n})" class="hover:scale-125 transition-all active:scale-90">⭐</button>`).join('')}</div><div class="flex gap-2"><input type="text" id="reviewInput" placeholder="Komentar..." class="flex-1 p-3 rounded-2xl border-none bg-white dark:bg-slate-700 focus:ring-2 focus:ring-anamac-600 text-sm outline-none"><button onclick="submitReview(${p.id}, 5)" class="bg-anamac-600 text-white px-5 rounded-2xl font-bold text-xs uppercase shadow-lg">Kirim</button></div></div>`;
     } else {
         formArea.innerHTML = `<p class="text-center text-[10px] text-slate-500 italic uppercase">Silakan <a href="login.html" class="text-anamac-600 font-bold underline">Login</a> untuk mereview.</p>`;
     }
 }
 
 // ==========================================
-// 5. BUSINESS LOGIC (CHECKOUT & WISHLIST)
+// 5. BUSINESS LOGIC & AUTH UI
 // ==========================================
 
 function addToCart(id) {
     const user = JSON.parse(localStorage.getItem('currentUser'));
-    if (!user) {
-        showToast("Login dulu ya, Bos! 🔒");
-        setTimeout(() => { window.location.href = 'login.html'; }, 1500);
-        return;
-    }
+    if (!user) { showToast("Login dulu ya, Bos! 🔒"); setTimeout(() => { window.location.href = 'login.html'; }, 1500); return; }
     const p = products.find(x => x.id === id);
     const existing = cart.find(x => x.id === id);
     existing ? existing.quantity++ : cart.push({...p, quantity: 1});
@@ -219,37 +181,44 @@ function addToCart(id) {
 
 function toggleWishlist(id, fromDrawer = false) {
     const idx = wishlist.indexOf(id);
-    if (idx === -1) {
-        wishlist.push(id);
-        showToast("Ditambah ke Wishlist ❤️");
-    } else {
-        wishlist.splice(idx, 1);
-        showToast("Dihapus dari Wishlist 💔");
-    }
+    idx === -1 ? wishlist.push(id) : wishlist.splice(idx, 1);
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
-    updateUIStats();
-    displayPage(currentPage);
+    updateUIStats(); displayPage(currentPage);
     if (fromDrawer) renderWishlistInDrawer();
+    showToast(idx === -1 ? "Ditambah ❤️" : "Dihapus 💔");
 }
 
 function submitReview(productId, rating) {
     const comment = document.getElementById('reviewInput')?.value || "Barang mantap!";
     const user = JSON.parse(localStorage.getItem('currentUser'));
-    
     let allReviews = JSON.parse(localStorage.getItem('productReviews')) || {};
     if (!allReviews[productId]) allReviews[productId] = [];
-    
-    allReviews[productId].push({ 
-        userName: user.name, 
-        rating, 
-        comment, 
-        date: new Date().toLocaleDateString('id-ID') 
-    });
-    
+    allReviews[productId].push({ userName: user.name, rating, comment, date: new Date().toLocaleDateString('id-ID') });
     localStorage.setItem('productReviews', JSON.stringify(allReviews));
-    showToast("Terima kasih ulasannya! ⭐");
-    toggleDetailSidebar(productId); 
-    displayPage(currentPage);
+    showToast("Terima kasih! ⭐"); toggleDetailSidebar(productId); displayPage(currentPage);
+}
+
+function checkAuthUI() {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const area = document.getElementById('authArea');
+    if (user && area) {
+        area.innerHTML = `
+            <div class="flex items-center gap-2 bg-white dark:bg-slate-800 p-1.5 pr-2 rounded-2xl border dark:border-slate-700 shadow-sm">
+                <div class="w-8 h-8 bg-anamac-600 rounded-xl flex items-center justify-center text-white font-bold text-xs uppercase italic">${user.name[0]}</div>
+                <span class="text-xs font-bold hidden md:block dark:text-white uppercase tracking-tight">${user.name.split(' ')[0]}</span>
+                <button onclick="handleLogout()" class="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 rounded-xl transition-all" title="Logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                </button>
+            </div>`;
+    }
+}
+
+function handleLogout() {
+    if(confirm("Yakin ingin keluar, Bos?")) {
+        localStorage.removeItem('currentUser');
+        showToast("Berhasil Logout 👋");
+        setTimeout(() => { location.reload(); }, 1000);
+    }
 }
 
 // ==========================================
@@ -267,8 +236,7 @@ function showToast(msg) {
     const t = document.createElement('div');
     t.id = 'customToast';
     t.className = 'fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-8 py-4 rounded-full shadow-2xl z-[100] font-black text-[10px] uppercase tracking-widest animate-bounce border border-white/20';
-    t.innerText = msg;
-    document.body.appendChild(t);
+    t.innerText = msg; document.body.appendChild(t);
     setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 500); }, 2500);
 }
 
@@ -283,11 +251,9 @@ function renderPagination() {
     const container = document.getElementById('pagination-controls');
     if (!container) return;
     const total = Math.ceil(currentDisplayData.length / itemsPerPage);
-    container.innerHTML = '';
-    if (total <= 1) return;
+    container.innerHTML = ''; if (total <= 1) return;
     for (let i = 1; i <= total; i++) {
-        const btn = document.createElement('button');
-        btn.innerText = i;
+        const btn = document.createElement('button'); btn.innerText = i;
         btn.className = `w-12 h-12 rounded-2xl font-bold transition-all ${currentPage === i ? 'bg-anamac-600 text-white shadow-lg' : 'bg-white dark:bg-slate-800 text-slate-400'}`;
         btn.onclick = () => { displayPage(i); window.scrollTo({top: 400, behavior: 'smooth'}); };
         container.appendChild(btn);
@@ -304,42 +270,19 @@ function filterCategory(cat) {
     displayPage(1);
 }
 
-function checkAuthUI() {
-    const user = JSON.parse(localStorage.getItem('currentUser'));
-    const area = document.getElementById('authArea');
-    if (user && area) {
-        area.innerHTML = `
-            <div class="flex items-center gap-2 bg-white dark:bg-slate-800 p-1.5 pr-4 rounded-2xl border dark:border-slate-700 shadow-sm">
-                <div class="w-8 h-8 bg-anamac-600 rounded-xl flex items-center justify-center text-white font-bold text-xs uppercase">${user.name[0]}</div>
-                <span class="text-xs font-bold hidden md:block dark:text-white">${user.name.split(' ')[0]}</span>
-            </div>`;
-    }
-}
-
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Theme Switcher
     if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark');
     const themeBtn = document.getElementById('themeToggle');
-    if (themeBtn) {
-        themeBtn.onclick = () => {
-            const dark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', dark ? 'dark' : 'light');
-        };
-    }
-
+    if (themeBtn) themeBtn.onclick = () => {
+        const dark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+    };
     fetchProducts();
-
-    // Search Real-time
     const search = document.getElementById('searchInput');
-    if (search) {
-        search.addEventListener('input', (e) => {
-            const k = e.target.value.toLowerCase();
-            currentDisplayData = products.filter(p => 
-                p.name.toLowerCase().includes(k) && 
-                (currentCategory === 'All' || p.category === currentCategory)
-            );
-            displayPage(1);
-        });
-    }
+    if (search) search.addEventListener('input', (e) => {
+        const k = e.target.value.toLowerCase();
+        currentDisplayData = products.filter(p => p.name.toLowerCase().includes(k) && (currentCategory === 'All' || p.category === currentCategory));
+        displayPage(1);
+    });
 });
